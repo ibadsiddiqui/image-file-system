@@ -1,9 +1,11 @@
 import React from 'react';
 import * as ImagePicker from 'expo-image-picker';
-import { Button, FlatList, Image, View, BackHandler } from 'react-native';
+import { Button, FlatList, Image, View, BackHandler, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { mapDispatchToProps, mapStateToProps } from '../redux/dispatchers';
 import uuidV4 from 'uuid/v4'
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { Feather } from '@expo/vector-icons';
 class ViewFolderData extends React.Component {
 
     componentDidMount() {
@@ -28,6 +30,8 @@ class ViewFolderData extends React.Component {
     render() {
         const folderID = this.props.navigation.getParam("item").id
         const dataToRender = this.props.foldersList.data.find(item => item.id === folderID).data
+        console.log(dataToRender);
+
         return (
             <View style={{ flex: 1, alignSelf: 'center', justifyContent: 'center', alignItems: "center" }}>
                 {
@@ -36,9 +40,16 @@ class ViewFolderData extends React.Component {
                         data={dataToRender}
                         keyExtractor={(itm, idx) => itm.id}
                         renderItem={(item) =>
-                            <View style={{ justifyContent: 'center', width: 100, height: 100, borderWidth: 1 }}>
-                                <Image source={{ uri: item.item.diskUri }} style={{ width: 50, height: 75 }} />
-                            </View>
+                            item.item.type === "folder" ?
+                                <TouchableOpacity onPress={() => this.props.navigation.navigate('ViewFolder', { item })}
+                                    style={{ borderWidth: 1, alignItems: 'center', flexDirection: 'row' }}>
+                                    <Feather name="folder" size={20} />
+                                    <Text style={{ marginHorizontal: 25 }}>{item.item.name}</Text>
+                                </TouchableOpacity>
+                                :
+                                <View style={{ justifyContent: 'center', width: 100, height: 100, borderWidth: 1 }}>
+                                    <Image source={{ uri: item.item.diskUri }} style={{ width: 50, height: 75 }} />
+                                </View>
 
                         }
                     />
