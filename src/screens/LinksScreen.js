@@ -8,20 +8,19 @@ import { mapDispatchToProps, mapStateToProps } from '../redux/dispatchers';
 class LinksScreen extends React.Component {
   addRootFolder = () => {
     const { folderName } = this.props
-    this.props.addFolder({ name: folderName, path: '/' + folderName, type: "folder", data: [], id: uuidV4() })
+    this.props.addFolder({ name: folderName, path: '/' + folderName.replace(" ", "_"), type: "folder", data: [], id: uuidV4() })
   }
 
   FromGallery = async () => {
     const response = await ImagePicker.launchImageLibraryAsync({ allowsEditing: true, mediaTypes: ImagePicker.MediaTypeOptions.Images })
     let imageName = response.uri.slice(response.uri.lastIndexOf("/") + 1)
-    this.props.addImageToRoot({ id: uuidV4(), name: imageName, path: '/' + imageName, diskUri: response.uri, type: "image", })
+    this.props.addImageToRoot({ id: uuidV4(), name: imageName, path: '/' + imageName.replace(" ", "_"), diskUri: response.uri, type: "image", })
   }
-
 
   FromCamera = async () => {
     const response = await ImagePicker.launchCameraAsync({ allowsEditing: true, mediaTypes: ImagePicker.MediaTypeOptions.Images })
     let imageName = response.uri.slice(response.uri.lastIndexOf("/") + 1)
-    this.props.addImageToRoot({ id: uuidV4(), name: imageName, path: '/' + imageName, diskUri: response.uri, type: "image", })
+    this.props.addImageToRoot({ id: uuidV4(), name: imageName, path: '/' + imageName.replace(" ", "_"), diskUri: response.uri, type: "image", })
   }
 
   addImageToRoot = () => {
