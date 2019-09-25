@@ -1,4 +1,4 @@
-import { ADD_FOLDER_TO_ROOT, ADD_IMAGE_TO_ROOT, SET_FOLDER_NAME } from "../types";
+import { ADD_FOLDER_TO_ROOT, ADD_IMAGE_TO_ROOT, SET_FOLDER_NAME, ADD_IMAGE_TO_FOLDER } from "../types";
 
 const initialState = {
     currentPosition: "",
@@ -32,6 +32,29 @@ const FolderReducer = (state = initialState, action) => {
                 foldersList: {
                     ...state.foldersList,
                     data: [...state.foldersList.data, action.payload]
+                }
+            }
+        case ADD_IMAGE_TO_FOLDER:
+
+            return {
+                ...state,
+                foldersList: {
+                    ...state.foldersList,
+                    data: state.foldersList.data.map(item => {
+                        if (item.id === action.payload.folderID) {
+                            return item.data.length === 0 ?
+                                {
+                                    ...item,
+                                    data: [action.payload.imageData]
+                                } :
+                                {
+                                    ...item,
+                                    data: [...item.data, action.payload.imageData]
+                                }
+                        } else {
+                            return item
+                        }
+                    })
                 }
             }
         default:
