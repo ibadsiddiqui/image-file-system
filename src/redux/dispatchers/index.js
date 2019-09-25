@@ -1,4 +1,4 @@
-import { setFolderName, addFolder } from "../actions/FolderActions"
+import { addFolder, addImageToRoot, setFolderName } from "../actions/FolderActions"
 
 export const mapStateToProps = (state) => {
     return {
@@ -11,6 +11,7 @@ export const mapStateToProps = (state) => {
 export const mapDispatchToProps = (dispatch) => {
     return {
         setFolderName: (name) => dispatch(setFolderName(name)),
-        addFolder: (data) => dispatch(addFolder(data))
+        addFolder: (data) => dispatch(addFolder(data)),
+        addImageToRoot: (data) => dispatch(addImageToRoot(data))
     }
 }
