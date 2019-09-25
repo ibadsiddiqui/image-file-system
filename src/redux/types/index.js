@@ -1,0 +1,5 @@
+export const ADD_IMAGE_TO_ROOT = "ADD_IMAGE_TO_ROOT";
+export const ADD_FOLDER_TO_ROOT = "ADD_FOLDER_TO_ROOT";
+
+export const SET_FOLDER_NAME = "SET_FOLDER_NAME";
+// export const ADD_FOLDER_TO_ROOT = "ADD_FOLDER_TO_ROOT";
