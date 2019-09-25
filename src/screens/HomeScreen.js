@@ -3,6 +3,7 @@ import React from 'react';
 import { FlatList, Image, StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { mapDispatchToProps, mapStateToProps } from '../redux/dispatchers';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 class HomeScreen extends React.Component {
   render() {
     return (
@@ -24,8 +25,10 @@ class HomeScreen extends React.Component {
                   paddingVertical: 5,
                   marginVertical: 0
                 }}>
-                  <Feather name="folder" size={20} />
-                  <Text style={{ marginHorizontal: 25 }}>{item.name}</Text>
+                  <TouchableOpacity onPress={() => this.props.navigation.navigate('ViewFolder', { item })}>
+                    <Feather name="folder" size={20} />
+                    <Text style={{ marginHorizontal: 25 }}>{item.name}</Text>
+                  </TouchableOpacity>
                 </View>
               )
             else return (
