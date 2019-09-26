@@ -1,12 +1,16 @@
 import { Feather } from '@expo/vector-icons';
 import React from 'react';
 import { FlatList, Image, StyleSheet, Text, View } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
 import { mapDispatchToProps, mapStateToProps } from '../redux/dispatchers';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 class HomeScreen extends React.Component {
   moveFolderToLvl1(moveToFolderID: string, folderToMoveID: string) {
     this.props.moveFolderToLvl1({ moveToFolderID, folderToMoveID });
+  }
+
+  moveImageToLvl1(moveToFolderID: string, imageToMoveID: string) {
+    this.props.moveImageToLvl1({ moveToFolderID, imageToMoveID });
   }
 
   render() {
@@ -19,7 +23,7 @@ class HomeScreen extends React.Component {
             if (item.type === "folder")
               return (
                 <View style={{
-                  height: 75,
+                  height: 200,
                   flexDirection: 'row',
                   alignItems: 'center',
                   borderWidth: 1,
@@ -29,15 +33,17 @@ class HomeScreen extends React.Component {
                   paddingVertical: 5,
                   marginVertical: 0,
                 }}>
-                  <TouchableOpacity onPress={() => this.props.navigation.navigate('ViewFolder', { item })} style={{ borderWidth: 1, alignItems: 'center', flexDirection: 'row' }}>
+                  <TouchableOpacity onPress={() => this.props.navigation.navigate('ViewFolder', { item })}
+                    style={{ borderWidth: 1, alignItems: 'center', flexDirection: 'row' }}
+                  >
                     <Feather name="folder" size={20} />
                     <Text style={{ marginHorizontal: 25 }}>{item.name}</Text>
                   </TouchableOpacity>
-                  <View style={{marginHorizontal:20,}}>
+                  <View style={{ marginHorizontal: 20, }}>
                     <Text>Move to folders</Text>
                     {
                       this.props.foldersList.data.filter(itm => item.id !== itm.id).map(_itm =>
-                        <Text key={_itm.id} style={{ width: 50, height: 20, borderWidth: 1, marginVertical:5 }}
+                        <Text key={_itm.id} style={{ width: 75, height: 20, borderWidth: 1, marginVertical: 5 }}
                           onPress={() => this.moveFolderToLvl1(_itm.id, item.id)}>
                           {_itm.name}
                         </Text>
@@ -48,7 +54,7 @@ class HomeScreen extends React.Component {
               )
             else return (
               <View style={{
-                height: 75,
+                height: 200,
                 flexDirection: 'row',
                 alignItems: 'flex-start',
                 borderWidth: 1,
@@ -61,7 +67,18 @@ class HomeScreen extends React.Component {
                 <View style={{ height: 50, width: 50 }}>
                   <Image source={{ uri: item.diskUri }} style={{ height: 60, width: 35 }} />
                 </View>
-                <Text style={{ marginHorizontal: 25 }}>{item.name}</Text>
+                <Text style={{ marginHorizontal: 25 }}>{item.name.slice(0, 10)}</Text>
+                <View style={{ marginHorizontal: 20, }}>
+                  <Text>Move to folders</Text>
+                  {
+                    this.props.foldersList.data.filter(itm => item.id !== itm.id).map(_itm =>
+                      <Text key={_itm.id} style={{ width: 75, height: 20, borderWidth: 1, marginVertical: 5 }}
+                        onPress={() => this.moveImageToLvl1(_itm.id, item.id)}>
+                        {_itm.name}
+                      </Text>
+                    )
+                  }
+                </View>
               </View>
             )
           }
