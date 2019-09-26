@@ -16,74 +16,79 @@ class HomeScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <FlatList
-          data={this.props.foldersList.data}
-          keyExtractor={(item, idx) => idx}
-          renderItem={({ item }) => {
-            if (item.type === "folder")
-              return (
-                <View style={{
-                  height: 200,
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  borderWidth: 1,
-                  borderColor: "transparent",
-                  borderBottomColor: 'black',
-                  paddingHorizontal: 50,
-                  paddingVertical: 5,
-                  marginVertical: 0,
-                }}>
-                  <TouchableOpacity onPress={() => this.props.navigation.navigate('ViewFolder', { item })}
-                    style={{ borderWidth: 1, alignItems: 'center', flexDirection: 'row' }}
-                  >
-                    <Feather name="folder" size={20} />
-                    <Text style={{ marginHorizontal: 25 }}>{item.name}</Text>
-                  </TouchableOpacity>
-                  <View style={{ marginHorizontal: 20, }}>
-                    <Text>Move to folders</Text>
-                    {
-                      this.props.foldersList.data.filter(itm => item.id !== itm.id).map(_itm =>
-                        <Text key={_itm.id} style={{ width: 75, height: 20, borderWidth: 1, marginVertical: 5 }}
-                          onPress={() => this.moveFolderToLvl1(_itm.id, item.id)}>
-                          {_itm.name}
-                        </Text>
-                      )
-                    }
+        {
+          this.props.foldersList.data.length === 0 ?
+            <Text style={{ textAlign: 'center', alignSelf: 'center' }}>Welcome to Root Folder. To add folder, go to next tab</Text>
+            :
+            <FlatList
+              data={this.props.foldersList.data}
+              keyExtractor={(item, idx) => idx}
+              renderItem={({ item }) => {
+                if (item.type === "folder")
+                  return (
+                    <View style={{
+                      height: 200,
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      borderWidth: 1,
+                      borderColor: "transparent",
+                      borderBottomColor: 'black',
+                      paddingHorizontal: 50,
+                      paddingVertical: 5,
+                      marginVertical: 0,
+                    }}>
+                      <TouchableOpacity onPress={() => this.props.navigation.navigate('ViewFolder', { item })}
+                        style={{ borderWidth: 1, alignItems: 'center', flexDirection: 'row' }}
+                      >
+                        <Feather name="folder" size={20} />
+                        <Text style={{ marginHorizontal: 25 }}>{item.name}</Text>
+                      </TouchableOpacity>
+                      <View style={{ marginHorizontal: 20, }}>
+                        <Text>Move to folders</Text>
+                        {
+                          this.props.foldersList.data.filter(itm => item.id !== itm.id).map(_itm =>
+                            <Text key={_itm.id} style={{ width: 75, height: 20, borderWidth: 1, marginVertical: 5 }}
+                              onPress={() => this.moveFolderToLvl1(_itm.id, item.id)}>
+                              {_itm.name}
+                            </Text>
+                          )
+                        }
+                      </View>
+                    </View>
+                  )
+                else return (
+                  <View style={{
+                    height: 200,
+                    flexDirection: 'row',
+                    alignItems: 'flex-start',
+                    borderWidth: 1,
+                    borderColor: "transparent",
+                    borderBottomColor: 'black',
+                    paddingHorizontal: 50,
+                    paddingVertical: 5,
+                    marginVertical: 0
+                  }}>
+                    <View style={{ height: 50, width: 50 }}>
+                      <Image source={{ uri: item.diskUri }} style={{ height: 60, width: 35 }} />
+                    </View>
+                    <Text style={{ marginHorizontal: 25 }}>{item.name.slice(0, 10)}</Text>
+                    <View style={{ marginHorizontal: 20, }}>
+                      <Text>Move to folders</Text>
+                      {
+                        this.props.foldersList.data.filter(itm => item.id !== itm.id).map(_itm =>
+                          <Text key={_itm.id} style={{ width: 75, height: 20, borderWidth: 1, marginVertical: 5 }}
+                            onPress={() => this.moveImageToLvl1(_itm.id, item.id)}>
+                            {_itm.name}
+                          </Text>
+                        )
+                      }
+                    </View>
                   </View>
-                </View>
-              )
-            else return (
-              <View style={{
-                height: 200,
-                flexDirection: 'row',
-                alignItems: 'flex-start',
-                borderWidth: 1,
-                borderColor: "transparent",
-                borderBottomColor: 'black',
-                paddingHorizontal: 50,
-                paddingVertical: 5,
-                marginVertical: 0
-              }}>
-                <View style={{ height: 50, width: 50 }}>
-                  <Image source={{ uri: item.diskUri }} style={{ height: 60, width: 35 }} />
-                </View>
-                <Text style={{ marginHorizontal: 25 }}>{item.name.slice(0, 10)}</Text>
-                <View style={{ marginHorizontal: 20, }}>
-                  <Text>Move to folders</Text>
-                  {
-                    this.props.foldersList.data.filter(itm => item.id !== itm.id).map(_itm =>
-                      <Text key={_itm.id} style={{ width: 75, height: 20, borderWidth: 1, marginVertical: 5 }}
-                        onPress={() => this.moveImageToLvl1(_itm.id, item.id)}>
-                        {_itm.name}
-                      </Text>
-                    )
-                  }
-                </View>
-              </View>
-            )
-          }
-          }
-        />
+                )
+              }
+              }
+            />
+        }
       </View>
     );
   }
