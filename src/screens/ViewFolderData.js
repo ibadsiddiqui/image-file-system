@@ -1,11 +1,12 @@
-import React from 'react';
-import * as ImagePicker from 'expo-image-picker';
-import { Button, FlatList, Image, View, BackHandler, Text } from 'react-native';
-import { connect } from 'react-redux';
-import { mapDispatchToProps, mapStateToProps } from '../redux/dispatchers';
-import uuidV4 from 'uuid/v4'
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Feather } from '@expo/vector-icons';
+import * as ImagePicker from 'expo-image-picker';
+import _ from 'lodash';
+import React from 'react';
+import { BackHandler, Button, FlatList, Image, Text, View } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { connect } from 'react-redux';
+import uuidV4 from 'uuid/v4';
+import { mapDispatchToProps, mapStateToProps } from '../redux/dispatchers';
 class ViewFolderData extends React.Component {
 
     componentDidMount() {
@@ -28,20 +29,20 @@ class ViewFolderData extends React.Component {
     }
 
     render() {
-        const folderID = this.props.navigation.getParam("item").id
-        const dataToRender = this.props.foldersList.data.find(item => item.id === folderID).data
-        console.log(dataToRender);
 
+        const folderID = this.props.navigation.getParam("item").id
+        const dataToRender = this.props.foldersList.data.find(item => item.id === folderID).data.filter(item => !_.isEmpty(item))
+        console.disableYellowBox = true;
         return (
             <View style={{ flex: 1, alignSelf: 'center', justifyContent: 'center', alignItems: "center" }}>
                 {
                     dataToRender.length !== 0 &&
-                    <FlatList style={{ width: 200, height: 100, borderWidth: 1, paddingTop: 100, felx: 1 }}
+                    <FlatList style={{ width: 200, height: 100, borderWidth: 1, flex: 1 }}
                         data={dataToRender}
                         keyExtractor={(itm, idx) => itm.id}
                         renderItem={(item) =>
                             item.item.type === "folder" ?
-                                <TouchableOpacity onPress={() => this.props.navigation.navigate('ViewFolder', { item })}
+                                <TouchableOpacity onPress={() => this.props.navigation.navigate('ViewFolderInsideLvl1', { parentFolderID: folderID, item })}
                                     style={{ borderWidth: 1, alignItems: 'center', flexDirection: 'row' }}>
                                     <Feather name="folder" size={20} />
                                     <Text style={{ marginHorizontal: 25 }}>{item.item.name}</Text>
