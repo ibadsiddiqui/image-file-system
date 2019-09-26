@@ -1,18 +1,26 @@
+import { AsyncStorage } from 'react-native';
 import { combineReducers, createStore } from "redux";
-
-// import { persistStore, persistReducer } from "redux-persist";
+import { persistReducer, persistStore } from "redux-persist";
 // defaults to localStorage AsyncStorage for react-native
-// import storage from "redux-persist/lib/storage"; 
-
+// import storage from "redux-persist/es/storage";
 import FolderReducer from "../reducer/FolderReducer";
 
+
+const persistConfig = {
+    key: 'root',
+    storage: AsyncStorage,
+}
 const rootReducer = combineReducers({
     folder: FolderReducer,
 });
 
+
+const persistedReducer = persistReducer(persistConfig, rootReducer)
+
 const configureStore = () => {
-    let store = createStore(rootReducer);
-    return { store };
+    let store = createStore(persistedReducer)
+    let persistor = persistStore(store)
+    return { store, persistor }
 };
 
 export default configureStore;
