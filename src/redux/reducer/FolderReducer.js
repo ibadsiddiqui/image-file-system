@@ -1,4 +1,4 @@
-import { ADD_FOLDER_TO_ROOT, ADD_IMAGE_TO_ROOT, SET_FOLDER_NAME, ADD_IMAGE_TO_FOLDER, MOVE_FOLDER_FROM_ROOT_TO_LVL1 } from "../types";
+import { ADD_FOLDER_TO_ROOT, ADD_IMAGE_TO_FOLDER, ADD_IMAGE_TO_ROOT, MOVE_FOLDER_FROM_ROOT_TO_LVL1, MOVE_IMAGE_FROM_ROOT_TO_LVL1, SET_FOLDER_NAME } from "../types";
 
 const initialState = {
     currentPosition: "",
@@ -26,11 +26,32 @@ const FolderReducer = (state = initialState, action) => {
                     data: [...state.foldersList.data, action.payload]
                 }
             }
-
+        case MOVE_IMAGE_FROM_ROOT_TO_LVL1:
+            const imageToMoveIDData = { ...state.foldersList.data.find(item => item.id == action.payload.imageToMoveID) }
+            return {
+                ...state,
+                foldersList: {
+                    ...state.foldersList,
+                    data: state.foldersList.data
+                        .filter((item, idx) => item.id !== action.payload.imageToMoveID)
+                        .map((item, idx) =>
+                            item.id === action.payload.moveToFolderID ?
+                                item.data.length === 0 ?
+                                    {
+                                        ...item,
+                                        data: [imageToMoveIDData]
+                                    }
+                                    :
+                                    {
+                                        ...item,
+                                        data: [`...item.data`, imageToMoveIDData]
+                                    }
+                                : item
+                        )
+                }
+            }
         case MOVE_FOLDER_FROM_ROOT_TO_LVL1:
             const folderToMoveIDData = { ...state.foldersList.data.find(item => item.id == action.payload.folderToMoveID) }
-            console.log("folderToMoveID", folderToMoveIDData);
-
             return {
                 ...state,
                 foldersList: {

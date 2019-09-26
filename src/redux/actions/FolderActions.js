@@ -1,4 +1,4 @@
-import { ADD_FOLDER_TO_ROOT, ADD_IMAGE_TO_ROOT, SET_FOLDER_NAME, ADD_IMAGE_TO_FOLDER, MOVE_FOLDER_FROM_ROOT_TO_LVL1 } from "../types"
+import { ADD_FOLDER_TO_ROOT, ADD_IMAGE_TO_FOLDER, ADD_IMAGE_TO_ROOT, MOVE_FOLDER_FROM_ROOT_TO_LVL1, MOVE_IMAGE_FROM_ROOT_TO_LVL1, SET_FOLDER_NAME } from "../types"
 
 export const setFolderName = (name) => {
     return {
@@ -10,6 +10,13 @@ export const setFolderName = (name) => {
 export const addFolder = (data) => {
     return {
         type: ADD_FOLDER_TO_ROOT,
+        payload: data
+    }
+}
+
+export const moveImageToLvl1 = (data) => {
+    return {
+        type: MOVE_IMAGE_FROM_ROOT_TO_LVL1,
         payload: data
     }
 }
